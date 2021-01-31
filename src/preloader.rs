@@ -14,3 +14,5 @@ pub static INDEX: Lazy<String> = Lazy::new(|| {
     std::fs::read_to_string(format!("{}web/index.html", WORKDIR.as_str()))
         .expect("Couldn\'t load `index.html`")
 });
+
+pub static ADDR: &'static str = "127.0.0.0:12787";
