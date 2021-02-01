@@ -11,3 +11,4 @@ actix-web = {version = "3", features = ["openssl"]}
 colored = "2.0.0"
 once_cell = "*"
 openssl = {version = "0.10", features = ["v110"]}
+crossbeam = "0.8.0"

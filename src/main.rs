@@ -2,6 +2,7 @@ use actix_web::{get, http::StatusCode, App, HttpResponse, HttpServer};
 
 mod preloader;
 use colored::Colorize;
+use console::Console;
 use preloader::{INDEX, WORKDIR, ADDR};
 
 mod ssl;
@@ -18,7 +19,9 @@ async fn index() -> HttpResponse {
 async fn main() -> std::io::Result<()> {
     let builder = ssl::build(WORKDIR.as_str());
 
-    let console = console::Console::spawn();
+
+    let mut console = Console::new();
+    console.spawn();
     console.log("Hello, World!".white(), false);
 
     HttpServer::new(|| App::new().service(index))
