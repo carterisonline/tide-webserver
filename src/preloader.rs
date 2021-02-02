@@ -1,6 +1,6 @@
+use crate::Console;
 use once_cell::sync::Lazy;
 use std::env;
-use crate::Console;
 
 pub static WORKDIR: Lazy<String> = Lazy::new(|| {
     let out = env::var("WORKDIR").expect("Please provide a WORKDIR");
@@ -16,8 +16,6 @@ pub static INDEX: Lazy<String> = Lazy::new(|| {
         .expect("Couldn\'t load `index.html`")
 });
 
-pub static CONSOLE: Lazy<Console> = Lazy::new(|| {
-    Console::new()
-});
+pub static CONSOLE: Lazy<Console> = Lazy::new(|| Console::new());
 
-pub static ADDR: &'static str = "127.0.0.0:3000";
+pub static ADDR: &'static str = "127.0.0.1:12787";
