@@ -21,7 +21,7 @@ impl Console {
         Console { verbose: false }
     }
 
-    pub fn spawn(&mut self) {
+    pub async fn spawn(&mut self) {
         crossbeam::scope(|scope| {
             scope.spawn(move |_| loop {
                 print!(
