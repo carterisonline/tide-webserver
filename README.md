@@ -12,3 +12,5 @@ This project allows me to run a small webserver in less than 1 MiB of ram (so fa
 `WORKDIR=~/documents/tide-webserver ./tide-webserver` (after building)
 
 - `WORKDIR` needs to contain the `keys` and `web` directories in order to access the SSL keys and `index.html`.
+---
+Originally based on the [actix-webserver](https://github.com/carterisonline/actix-webserver) project
