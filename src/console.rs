@@ -41,9 +41,11 @@ impl Console {
 
             match line.trim_end_matches('\n').to_ascii_lowercase().as_str() {
                 "exit" => process::exit(0x0100),
-                "toggle-verbose" | "verbose" => {
-                    let v = &VERBOSE.lock().unwrap();
-                    *VERBOSE.lock().unwrap().get_mut() = !v.load(Ordering::SeqCst);
+                "verbose-on" => {
+                    *VERBOSE.lock().unwrap().get_mut() = true
+                }
+                "verbose-off" => {
+                    *VERBOSE.lock().unwrap().get_mut() = false
                 }
                 "log-verbose" => {
                     if VERBOSE.lock().unwrap().load(Ordering::SeqCst) {
