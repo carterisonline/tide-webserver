@@ -20,7 +20,7 @@ async fn main() -> std::io::Result<()> {
     let builder = ssl::build(WORKDIR.as_str());
 
 
-    let mut console = Console::new();
+    let console = Console::new();
     console.spawn();
     console.log("Hello, World!".white(), false);
 
