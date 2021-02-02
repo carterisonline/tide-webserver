@@ -15,8 +15,12 @@ pub static VERBOSE: Lazy<Mutex<AtomicBool>> = Lazy::new(|| Mutex::new(AtomicBool
 
 impl Console {
     pub fn log(&self, text: ColoredString, verbose: bool) {
-        if (verbose && VERBOSE.lock().unwrap().load(Ordering::SeqCst)) || !verbose {
+        if !verbose {
             println!("{}", text);
+        }
+
+        else if verbose && VERBOSE.lock().unwrap().load(Ordering::SeqCst) {
+            println!("{}: {}", "[VERBOSE LOGGER]".blue(), text);
         }
     }
 
