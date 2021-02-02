@@ -22,6 +22,7 @@ async fn index(req: HttpRequest) -> HttpResponse {
         ),
         true,
     );
+
     HttpResponse::build(StatusCode::OK)
         .content_type("text/html; charset=utf-8")
         .body(INDEX.as_str())
@@ -32,7 +33,7 @@ async fn main() -> std::io::Result<()> {
     let builder = ssl::build(WORKDIR.as_str());
 
     CONSOLE.spawn();
-    CONSOLE.log("Hello, World!".white(), false);
+    CONSOLE.log(format!("{}", "Hello, World!".white()), false);
 
     HttpServer::new(|| App::new().service(index))
         .bind_openssl(ADDR, builder)?
