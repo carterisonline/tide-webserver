@@ -9,23 +9,19 @@ use once_cell::sync::Lazy;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
-pub struct Console {
-    verbose: AtomicBool,
-}
+pub struct Console {}
 
 pub static VERBOSE: Lazy<Mutex<AtomicBool>> = Lazy::new(|| Mutex::new(AtomicBool::new(false)));
 
 impl Console {
-    pub fn log(self, text: ColoredString, verbose: bool) {
-        if (verbose && self.verbose.into_inner()) || !verbose {
+    pub fn log(&self, text: ColoredString, verbose: bool) {
+        if (verbose && VERBOSE.lock().unwrap().load(Ordering::SeqCst)) || !verbose {
             println!("{}", text);
         }
     }
 
     pub fn new() -> Console {
-        Console {
-            verbose: AtomicBool::new(false),
-        }
+        Console {}
     }
 
     pub fn spawn(&self) {
