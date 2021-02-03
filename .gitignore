@@ -1,2 +1,7 @@
+# Rust Files
 /target
 Cargo.lock
+
+# Parcel/yarn files
+node_modules
+yarn.lock
