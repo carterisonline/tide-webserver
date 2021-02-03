@@ -34,7 +34,6 @@ async fn index(req: Request<()>) -> Result<Response> {
 async fn main() -> Result<()> {
     println!("https://{}", ADDR);
     CONSOLE.spawn();
-    CONSOLE.log(format!("{}", "Hello, World!".white()), false);
     let mut app = tide::new();
     app.at("/").get(index);
     app.listen(
