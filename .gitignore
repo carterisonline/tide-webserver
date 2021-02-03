@@ -5,3 +5,7 @@ Cargo.lock
 # Parcel/yarn files
 node_modules
 yarn.lock
+.cache
+dist
+package-lock.json
+**/yarn-error.log

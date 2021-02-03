@@ -1,5 +1,11 @@
 {
-  "devDependencies": {
-    "parcel": "^2.0.0-beta.1"
-  }
+    "name": "parcel-builder",
+    "scripts": {
+        "start": "parcel serve ./web/index.html",
+        "build": "parcel build ./web/index.html"
+    },
+    "devDependencies": {
+        "parcel-plugin-inline-source": "^1.0.0",
+        "parcel-bundler": "^1.12.4"
+    }
 }
