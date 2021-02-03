@@ -1,4 +1,5 @@
-use actix_web::{get, http::StatusCode, App, HttpRequest, HttpResponse, HttpServer};
+use tide::{http::mime, Request, Response, Result, StatusCode};
+use tide_rustls::TlsListener;
 
 mod preloader;
 use colored::Colorize;
@@ -6,37 +7,42 @@ use console::Console;
 use preloader::{ADDR, CONSOLE, INDEX, WORKDIR};
 
 mod console;
-mod ssl;
 
-#[get("/")]
-async fn index(req: HttpRequest) -> HttpResponse {
+async fn index(req: Request<()>) -> Result<Response> {
     CONSOLE.log(
         format!(
             "[{}]: {} {}",
-            req.connection_info()
-                .realip_remote_addr()
-                .unwrap_or("UNKNOWN IP")
-                .yellow(),
+            req.local_addr().unwrap_or("UNKNOWN IP").yellow(),
             req.method().to_string().green(),
-            req.path().red()
+            req.url()
+                .to_string()
+                .trim_start_matches(
+                    format!("https://{}", ADDR.replace("127.0.0.1", "localhost")).as_str()
+                )
+                .red()
         ),
         true,
     );
 
-    HttpResponse::build(StatusCode::OK)
-        .content_type("text/html; charset=utf-8")
+    Ok(Response::builder(StatusCode::Ok)
         .body(INDEX.as_str())
+        .content_type(mime::HTML)
+        .build())
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    let builder = ssl::build(WORKDIR.as_str());
-
+#[async_std::main]
+async fn main() -> Result<()> {
+    println!("https://{}", ADDR);
     CONSOLE.spawn();
     CONSOLE.log(format!("{}", "Hello, World!".white()), false);
-
-    HttpServer::new(|| App::new().service(index))
-        .bind_openssl(ADDR, builder)?
-        .run()
-        .await
+    let mut app = tide::new();
+    app.at("/").get(index);
+    app.listen(
+        TlsListener::build()
+            .addrs(ADDR)
+            .cert(format!("{}keys/cert.pem", *WORKDIR))
+            .key(format!("{}keys/key.pem", *WORKDIR)),
+    )
+    .await?;
+    Ok(())
 }
