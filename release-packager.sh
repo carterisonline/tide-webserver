@@ -1,4 +1,4 @@
-package="tide-webserver-0.3.2-x86_64-unknown-linux-gnu"
+package="tide-webserver-0.3.3-x86_64-unknown-linux-gnu"
 mkdir $package
 cargo build --release
 cp ./target/release/tide-webserver $package
