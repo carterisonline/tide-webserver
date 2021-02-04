@@ -2,7 +2,7 @@
 authors = ["Carter Reeb <carter2k4@pm.me>"]
 edition = "2018"
 name = "tide-webserver"
-version = "0.3.2"
+version = "0.3.3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
