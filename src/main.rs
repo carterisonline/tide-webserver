@@ -21,7 +21,7 @@ async fn index(req: Request<()>) -> Result<Response> {
                 )
                 .red()
         ),
-        true,
+        true
     );
 
     Ok(Response::builder(StatusCode::Ok)
@@ -32,8 +32,8 @@ async fn index(req: Request<()>) -> Result<Response> {
 
 #[async_std::main]
 async fn main() -> Result<()> {
-    println!("https://{}", ADDR);
     CONSOLE.spawn();
+
     let mut app = tide::new();
     app.at("/").get(index);
     app.listen(
