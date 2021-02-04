@@ -37,4 +37,4 @@ pub static INDEX: Lazy<String> = Lazy::new(|| {
         .expect("Couldn\'t load `index.html`")
 });
 
-pub static ADDR: &'static str = "127.0.0.1:12787";
+pub static ADDR: &'static str = "127.0.0.1:3000";

@@ -37,10 +37,11 @@ async fn main() -> Result<()> {
     let mut app = tide::new();
     app.at("/").get(index);
     app.listen(
-        TlsListener::build()
-            .addrs(ADDR)
-            .cert(format!("{}keys/cert.pem", *WORKDIR))
-            .key(format!("{}keys/key.pem", *WORKDIR)),
+        ADDR
+        //TlsListener::build()
+            //.addrs(ADDR)
+            //.cert(format!("{}keys/cert.pem", *WORKDIR))
+            //.key(format!("{}keys/key.pem", *WORKDIR)),
     )
     .await?;
     Ok(())
