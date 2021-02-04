@@ -4,7 +4,7 @@ use tide_rustls::TlsListener;
 mod preloader;
 use colored::Colorize;
 use console::Console;
-use preloader::{ADDR, CONSOLE, INDEX, WORKDIR};
+use preloader::{ADDR, CONSOLE, INDEX, WORKDIR, SSL};
 
 mod console;
 
@@ -36,13 +36,19 @@ async fn main() -> Result<()> {
 
     let mut app = tide::new();
     app.at("/").get(index);
-    app.listen(
-        ADDR
-        //TlsListener::build()
-            //.addrs(ADDR)
-            //.cert(format!("{}keys/cert.pem", *WORKDIR))
-            //.key(format!("{}keys/key.pem", *WORKDIR)),
-    )
-    .await?;
+
+    if *SSL {
+        app.listen(
+            TlsListener::build()
+                .addrs(ADDR)
+                .cert(format!("{}keys/cert.pem", *WORKDIR))
+                .key(format!("{}keys/key.pem", *WORKDIR)),
+        ).await?;
+    } else {
+        app.listen(
+            ADDR
+        ).await?;
+    }
+    
     Ok(())
 }

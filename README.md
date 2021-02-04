@@ -8,10 +8,9 @@ This project allows me to run a small webserver in less than 1 MiB of ram:
 
 ## How to run:
 
-`WORKDIR=~/documents/tide-webserver cargo run`
+- Make sure you're in the current `tide-webserver` directory, then run `./tide-webserver`
+- FOR DEVELOPMENT: `cargo run` or `cargo run --release` (for optimized builds)
 
--- OR --
-
-`WORKDIR=~/documents/tide-webserver ./tide-webserver` (after building)
-
-- `WORKDIR` needs to contain the `keys` and `web` directories in order to access the SSL keys and `index.html`.
+### Workspace Variables:
+- `SSL` (Defaults to `"false"`) - Whether or not to enable SSL encryption
+- `WORKDIR` (Defaults to `$PWD`) - The working directory, containing the `web`, `keys`, and (during build) `dist` directories.
