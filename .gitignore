@@ -9,3 +9,6 @@ yarn.lock
 dist
 package-lock.json
 **/yarn-error.log
+
+#Release Packages
+tide-webserver-*.tar*
