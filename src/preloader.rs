@@ -35,16 +35,16 @@ pub static SSL: Lazy<bool> = Lazy::new(|| {
 pub static CONSOLE: Lazy<Console> = Lazy::new(|| Console::new());
 
 pub static INDEX: Lazy<String> = Lazy::new(|| {
-    CONSOLE.log(format!("{}", "Building index.html...".yellow()), true);
+    CONSOLE.log(format!("{}", "Building index.pug...".yellow()), true);
 
     let mut command = Command::new("parcel");
     command.arg("build");
-    command.arg(format!("{}web/index.html", WORKDIR.as_str()));
+    command.arg(format!("{}web/index.pug", WORKDIR.as_str()));
 
     if let Some(exit_code) = command.execute().unwrap() {
         if exit_code == 0 {
             CONSOLE.log(
-                format!("{}", "Successfully built index.html!".green()),
+                format!("{}", "Successfully built index.pug!".green()),
                 true,
             );
         } else {
