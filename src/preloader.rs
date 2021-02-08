@@ -4,6 +4,7 @@ use execute::Execute;
 use once_cell::sync::Lazy;
 use std::env;
 use std::process::Command;
+use std::sync::{Mutex};
 
 pub static WORKDIR: Lazy<String> = Lazy::new(|| {
     let out = env::var("WORKDIR").unwrap_or(
@@ -32,10 +33,10 @@ pub static SSL: Lazy<bool> = Lazy::new(|| {
     }
 });
 
-pub static CONSOLE: Lazy<Console> = Lazy::new(|| Console::new());
+pub static CONSOLE: Lazy<Mutex<Console>> = Lazy::new(|| Mutex::new(Console::new()));
 
 pub static INDEX: Lazy<String> = Lazy::new(|| {
-    CONSOLE.log(format!("{}", "Building index.pug...".yellow()), true);
+    CONSOLE.lock().unwrap().log(format!("{}", "Building index.pug...".yellow()), true);
 
     let mut command = Command::new("parcel");
     command.arg("build");
@@ -43,7 +44,7 @@ pub static INDEX: Lazy<String> = Lazy::new(|| {
 
     if let Some(exit_code) = command.execute().unwrap() {
         if exit_code == 0 {
-            CONSOLE.log(
+            CONSOLE.lock().unwrap().log(
                 format!("{}", "Successfully built index.pug!".green()),
                 true,
             );

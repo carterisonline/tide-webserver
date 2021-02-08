@@ -9,7 +9,7 @@ use preloader::{ADDR, CONSOLE, INDEX, WORKDIR, SSL};
 mod console;
 
 async fn index(req: Request<()>) -> Result<Response> {
-    CONSOLE.log(
+    CONSOLE.lock().unwrap().log(
         format!(
             "[{}]: {} {}",
             req.local_addr().unwrap_or("UNKNOWN IP").yellow(),
@@ -32,7 +32,7 @@ async fn index(req: Request<()>) -> Result<Response> {
 
 #[async_std::main]
 async fn main() -> Result<()> {
-    CONSOLE.spawn();
+    CONSOLE.lock().unwrap().spawn();
 
     let mut app = tide::new();
     app.at("/").get(index);
