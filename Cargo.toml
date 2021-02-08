@@ -16,3 +16,4 @@ once_cell = "*"
 openssl = {version = "0.10", features = ["v110"]}
 crossbeam = "0.8.0"
 execute = "0.2.8"
+terminal_size = "0.1.16"
