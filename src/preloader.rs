@@ -1,4 +1,4 @@
-use crate::Console;
+use crate::console;
 use colored::Colorize;
 use execute::Execute;
 use once_cell::sync::Lazy;
@@ -32,10 +32,8 @@ pub static SSL: Lazy<bool> = Lazy::new(|| {
     }
 });
 
-pub static CONSOLE: Lazy<Console> = Lazy::new(|| Console::new());
-
 pub static INDEX: Lazy<String> = Lazy::new(|| {
-    CONSOLE.log(format!("{}", "Building index.pug...".yellow()), true);
+    console::log(format!("{}", "Building index.pug...".yellow()), true);
 
     let mut command = Command::new("parcel");
     command.arg("build");
@@ -43,7 +41,7 @@ pub static INDEX: Lazy<String> = Lazy::new(|| {
 
     if let Some(exit_code) = command.execute().unwrap() {
         if exit_code == 0 {
-            CONSOLE.log(
+            console::log(
                 format!("{}", "Successfully built index.pug!".green()),
                 true,
             );

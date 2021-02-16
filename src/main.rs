@@ -3,13 +3,12 @@ use tide_rustls::TlsListener;
 
 mod preloader;
 use colored::Colorize;
-use console::Console;
-use preloader::{ADDR, CONSOLE, INDEX, WORKDIR, SSL};
+use preloader::{ADDR, INDEX, WORKDIR, SSL};
 
 mod console;
 
 async fn index(req: Request<()>) -> Result<Response> {
-    CONSOLE.log(
+    console::log(
         format!(
             "[{}]: {} {}",
             req.local_addr().unwrap_or("UNKNOWN IP").yellow(),
@@ -17,7 +16,10 @@ async fn index(req: Request<()>) -> Result<Response> {
             req.url()
                 .to_string()
                 .trim_start_matches(
-                    format!("https://{}", ADDR.replace("127.0.0.1", "localhost")).as_str()
+                    format!("{}://{}", &match *SSL {
+                        true => "https",
+                        false => "http",
+                    }, ADDR).as_str()
                 )
                 .red()
         ),
@@ -32,7 +34,7 @@ async fn index(req: Request<()>) -> Result<Response> {
 
 #[async_std::main]
 async fn main() -> Result<()> {
-    CONSOLE.spawn();
+    console::spawn();
 
     let mut app = tide::new();
     app.at("/").get(index);
