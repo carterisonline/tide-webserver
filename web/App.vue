@@ -1,5 +1,7 @@
 <template>
-  <div style="top:0px;
+  <div>
+    <Navbar></Navbar>
+    <div style="top:0px;
               padding-top:6%;
               margin:auto; position:relative;
               width:950px;
@@ -55,11 +57,17 @@
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card>
+    </div>
   </div>
 </template>
 
 <script>
+import Navbar from './components/Navbar.vue';
+
 export default {
+  components: {
+    Navbar,
+  },
   data() {
     return {
       form: {
