@@ -35,7 +35,8 @@ pub static SSL: Lazy<bool> = Lazy::new(|| {
 pub static INDEX: Lazy<String> = Lazy::new(|| {
     console::log(format!("{}", "Building index.pug...".yellow()), true);
 
-    let mut command = Command::new("parcel");
+    let mut command = Command::new("npx");
+    command.arg("parcel");
     command.arg("build");
     command.arg(format!("{}web/index.pug", WORKDIR.as_str()));
 
