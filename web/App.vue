@@ -83,6 +83,7 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
+      // Should probably use: https://bootstrap-vue.org/docs/components/alert
       alert(JSON.stringify(this.form));
     },
     onReset(event) {
