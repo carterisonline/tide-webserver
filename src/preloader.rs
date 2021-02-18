@@ -33,27 +33,56 @@ pub static SSL: Lazy<bool> = Lazy::new(|| {
 });
 
 pub static INDEX: Lazy<String> = Lazy::new(|| {
-    console::log(format!("{}", "Building index.pug...".yellow()), true);
+    console::log(format!("{}", "Recieved first-time connection to Index! Preparing to build...".yellow()), true);
 
-    let mut command = Command::new("npx");
-    command.arg("parcel");
-    command.arg("build");
-    command.arg(format!("{}web/index.pug", WORKDIR.as_str()));
-
-    if let Some(exit_code) = command.execute().unwrap() {
+    console::log(format!("{}", "Resolving NPM package configuration...".yellow()), true);
+    let mut npm_command = Command::new("npm");
+    npm_command.arg("install");
+    if let Some(exit_code) = npm_command.execute().unwrap() {
         if exit_code == 0 {
             console::log(
-                format!("{}", "Successfully built index.pug!".green()),
+                format!("{}", "All NPM packages installed.".green()),
                 true,
             );
         } else {
-            eprintln!("Failed to build index.html");
+            eprintln!("Failed to fetch NPM packages");
+        }
+    } else {
+        eprintln!("NPM fetch process interrupted");
+    }
+
+    console::log(format!("{}", "Building...".yellow()), true);
+
+    let mut build_command = Command::new("npx");
+    build_command.arg("parcel");
+    build_command.arg("build");
+    build_command.arg(format!("{}web/index.pug", WORKDIR.as_str()));
+
+    if let Some(exit_code) = build_command.execute().unwrap() {
+        if exit_code == 0 {
+            console::log(
+                format!("{}", "Built successfully!".green()),
+                true,
+            );
+        } else {
+            eprintln!("Failed to build Index");
         }
     } else {
         eprintln!("Build process interrupted");
     }
-    std::fs::read_to_string(format!("{}dist/index.html", WORKDIR.as_str()))
-        .expect("Couldn\'t load `index.html`")
+
+    let out = std::fs::read_to_string(format!("{}dist/index.html", WORKDIR.as_str()));
+    match out {
+        Ok(_) => {
+            console::log(format!("{}", "Loaded built index successfully!".green()), true);
+            out.unwrap()
+        }
+
+        Err(err) => {
+            eprintln!("Failed to load built index: {}", err);
+            String::from("")
+        }
+    }
 });
 
 pub static ADDR: &'static str = "0.0.0.0:12787";
