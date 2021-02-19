@@ -2,7 +2,7 @@ use crate::console;
 use crate::preloader::WORKDIR;
 use colored::Colorize;
 use execute::Execute;
-use std::process::Command;
+use std::process::{self, Command};
 
 pub fn compile_app(directory: &str) -> Result<(), String> {
     console::log(format!("{}", format!("Building {}...", directory).yellow()), true);
@@ -39,7 +39,13 @@ pub fn npm_install() -> Result<(), String> {
             );
             Ok(())
         } else {
-            Err(String::from("Failed to fetch NPM packages"))
+            println!("{}", "Couldn\'t fetch NPM packages! Is Node.js installed?".red());
+            println!("For Arch/Manjaro: {}", "pacman -S nodejs npm".blue());
+            println!("For RHEL-Based Distros: {}", "dnf module install nodejs:latest".magenta());
+            println!("For Debian/Ubuntu: ------------------");
+            println!("{}", "curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -".red());
+            println!("{}", "sudo apt-get install -y nodejs".red());
+            process::exit(0x0100);
         }
     } else {
         Err(String::from("NPM fetch process interrupted"))
