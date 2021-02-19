@@ -7,16 +7,15 @@ use crate::preloader::ADDR;
 use crate::compiler::npm_install;
 use colored::*;
 use once_cell::sync::Lazy;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 
 
-pub static VERBOSE: Lazy<Mutex<AtomicBool>> = Lazy::new(|| Mutex::new(AtomicBool::new(false)));
+pub static VERBOSE: Lazy<Mutex<bool>> = Lazy::new(|| Mutex::new(false));
 
 pub fn log(text: String, verbose: bool) {
     if !verbose {
         println!("{}", text);
-    } else if verbose && VERBOSE.lock().unwrap().load(Ordering::SeqCst) {
+    } else if verbose && *VERBOSE.lock().unwrap() {
         println!("{}: {}", "[VERBOSE LOGGER]".blue(), text);
     }
 }
@@ -35,10 +34,10 @@ pub fn spawn() {
 
         match line.trim_end_matches('\n').to_ascii_lowercase().as_str() {
             "exit" => process::exit(0x0100),
-            "verbose-on" => *VERBOSE.lock().unwrap().get_mut() = true,
-            "verbose-off" => *VERBOSE.lock().unwrap().get_mut() = false,
+            "verbose-on" => *VERBOSE.lock().unwrap() = true,
+            "verbose-off" => *VERBOSE.lock().unwrap() = false,
             "log-verbose" => {
-                if VERBOSE.lock().unwrap().load(Ordering::SeqCst) {
+                if *VERBOSE.lock().unwrap() {
                     println!("{}", "Hello, Verbose!".yellow());
                 }
             }
