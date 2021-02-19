@@ -3,7 +3,7 @@ use std::{
     process,
 };
 
-use crate::preloader::ADDR;
+use crate::preloader::{ADDR, npm_install};
 use colored::*;
 use once_cell::sync::Lazy;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -21,6 +21,7 @@ pub fn log(text: String, verbose: bool) {
 }
 
 pub fn spawn() {
+    npm_install().unwrap();
     std::thread::spawn(move || loop {
         print!(
             "[{} @{}] => ",
