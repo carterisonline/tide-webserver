@@ -25,7 +25,7 @@ pub fn spawn() {
     std::thread::spawn(move || loop {
         print!(
             "[{} @{}] => ",
-            "ACTIX-WEBSERVER".yellow(),
+            "TIDE-WEBSERVER".yellow(),
             ADDR.green().italic()
         );
         io::stdout().flush().unwrap();
@@ -34,11 +34,23 @@ pub fn spawn() {
 
         match line.trim_end_matches('\n').to_ascii_lowercase().as_str() {
             "exit" => process::exit(0x0100),
-            "verbose-on" => *VERBOSE.lock().unwrap() = true,
-            "verbose-off" => *VERBOSE.lock().unwrap() = false,
-            "log-verbose" => {
-                if *VERBOSE.lock().unwrap() {
-                    println!("{}", "Hello, Verbose!".yellow());
+            "verbose" => {
+                println!("{}", "Expected option <on>, <off>, or <toggle>".red());
+            }
+            "verbose on" => {
+                *VERBOSE.lock().unwrap() = true;
+                println!("{} {}", "Verbose logging is now".blue(), " ON ".black().on_green());
+            },
+            "verbose off" => {
+                *VERBOSE.lock().unwrap() = false;
+                println!("{} {}", "Verbose logging is now".blue(), " OFF ".black().on_red());
+            },
+            "verbose toggle" => {
+                let mut b = VERBOSE.lock().unwrap();
+                *b = !*b;
+                match *b {
+                    true => println!("{} {}", "Verbose logging is now".blue(), " ON ".black().on_green()),
+                    false => println!("{} {}", "Verbose logging is now".blue(), " OFF ".black().on_red())
                 }
             }
             "" => (),
