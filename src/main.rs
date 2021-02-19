@@ -1,10 +1,10 @@
 use tide::{http::mime, Request, Response, Result, StatusCode};
 use tide_rustls::TlsListener;
-
-mod preloader;
 use colored::Colorize;
 use preloader::{ADDR, INDEX, WORKDIR, SSL};
 
+mod preloader;
+mod compiler;
 mod console;
 
 async fn index(req: Request<()>) -> Result<Response> {

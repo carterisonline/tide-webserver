@@ -3,7 +3,8 @@ use std::{
     process,
 };
 
-use crate::preloader::{ADDR, npm_install};
+use crate::preloader::ADDR;
+use crate::compiler::npm_install;
 use colored::*;
 use once_cell::sync::Lazy;
 use std::sync::atomic::{AtomicBool, Ordering};
